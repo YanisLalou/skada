@@ -507,10 +507,10 @@ class KLIEPReweightAdapter(BaseReweightAdapter):
         b = np.mean(b, axis=0)
 
         alpha = np.ones(n_centers)
-        obj = np.sum(np.log(A @ alpha))
+        obj = np.sum(np.log(A @ alpha + EPS))
         for _ in range(self.max_iter):
             old_obj = obj
-            alpha += EPS * A.T @ (1 / (A @ alpha))
+            alpha += EPS * A.T @ (1 / (A @ alpha + EPS))
             alpha += (1 - b @ alpha) * b / (b @ b)
             alpha = (alpha > 0) * alpha
             alpha /= b @ alpha
